@@ -6,7 +6,7 @@ export const SoloConsonantes: FC = () => {
     useEffect(() => {
         //Se obtiene la última letra de la palabra ingresada
         let letra = palabra.substring(palabra.length-1, palabra.length)
-        //Se considera la letra en minúscula solo para reducir el universon la expresión regular
+        //Se considera la letra en minúscula solo para reducir el universo la expresión regular
         let min = letra.toLowerCase()
         //Expresión regular para solo considerar las consonantes
         const r = /^[bcdfghjklmnñpqrstvwxyz]/;
