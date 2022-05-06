@@ -2,28 +2,20 @@
 import { FC, useState, useEffect} from 'react'
 
 export const SoloConsonantes: FC = () => {
-    const [tecla, setTecla] = useState('')
-    
-
+    const [palabra, setPalabra] = useState('')
     useEffect(() => {
-        const teclaPresionada = (e: KeyboardEvent) => {
-            //filtra el valor de la tecla pulsada para que solo permita consonantes en minúscula y mayuscula solamante
-            //e.key.length===1 permite filtrar teclas espaciales. Ej. al pulsar Ctrl, el evento captura "Ctrl"
-            if(((e.key>='b'&& e.key<='z' && e.key!=='e' && e.key!=='i' && e.key!=='o' && e.key!=='u') ||
-            (e.key>='B'&& e.key<='Z' && e.key!=='E' && e.key!=='I' && e.key!=='O' && e.key!=='U')) && e.key.length===1)
-            setTecla(tecla + e.key)
-            //busca y da foco al input
-            document.getElementById('txtConsonantes')?.focus()
+        //Se obtiene la última letra de la palabra ingresada
+        let letra = palabra.substring(palabra.length-1, palabra.length)
+        //Se considera la letra en minúscula solo para reducir el universon la expresión regular
+        let min = letra.toLowerCase()
+        //Expresión regular para solo considerar las consonantes
+        const r = /^[bcdfghjklmnñpqrstvwxyz]/;
+        //Se aplica expresión regular, cualquier caracter distinto a la expresión regular se quita de la palabra 
+        if(!r.test(min)){
+            //Si no cumple con la expresión regular se quita la última letra ingresada
+            setPalabra(palabra.replace(letra,''))
         }
-        //document.getElementsByName("txtConsonantes")[0].addEventListener('keydown', teclaPresionada);
-        document.addEventListener('keydown', teclaPresionada);
+    }, [palabra])
 
-        //Esto provoca error al dejar el componente
-        //return () => {document.getElementsByName("txtConsonantes")[0].removeEventListener('keydown', teclaPresionada)}
-
-        return () => {document.removeEventListener('keydown', teclaPresionada)}
-    }, [tecla])
-
-    //onChange={()=>null} evita error
-    return <><input autoFocus onChange={()=>null} type="text" id="txtConsonantes" name="txtConsonantes" value={tecla} /></>
+    return <><input autoFocus onChange={(e) => setPalabra(e.target.value)} type="text" id="txtConsonantes" name="txtConsonantes" value={palabra} /></>
 }
